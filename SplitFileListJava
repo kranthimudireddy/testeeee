@@ -1,0 +1,59 @@
+package za.co.rmb.casdm.tests.common;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.io.*;
+
+public class SplitFileListJava {
+
+  public static void main(String[] args)throws Exception
+  {
+    // We need to provide file path as the parameter:
+    // double backquote is to avoid compiler interpret words
+    // like \test as \t (ie. as a escape sequence)
+    File fileName = new File("\\\\helium\\D-Tde\\Share\\FR credit systems\\ELMS\\Veneshree\\LEC\\20210224\\dir_ndddd.txt");
+
+    List<String> lines = Collections.emptyList();
+    lines =
+        Files.readAllLines(Paths.get(String.valueOf(fileName)), StandardCharsets.UTF_8);
+
+    Iterator<String> itr = lines.iterator();
+    while (itr.hasNext()) {
+      String st = itr.next();
+      String[] arrSplit = st.split("\\t");
+      for (String s : arrSplit) {
+        if (s.equals("<html>")) {
+          StringBuilder sBuilder = new StringBuilder(s);
+          while (itr.hasNext()) {
+            if(!(itr.next().equals("</html>"))) {
+              sBuilder.append(itr.next());
+            } else
+              break;
+
+          }
+          s = sBuilder.toString();
+          System.out.println(s);
+        }
+       //System.out.println();
+        //System.out.print(s);
+      }
+      System.out.println();
+    }
+
+  }
+}
+
+
+//          if (itr.hasNext() && !(itr.next().equals("</html>"))) {
+//            s = s + itr.next();
+//          }
+//          System.out.println();
